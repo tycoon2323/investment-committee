@@ -12,23 +12,68 @@
 
 ## How it works
 
+The CIO is the skill itself: it reads your request, sends the work to the specialists, combines their answers and decides. This is the path of the most complete request, *"analyse company X"*:
+
 ```mermaid
-flowchart LR
-    U([You: a request]) --> CIO{{CIO skill}}
-    CIO --> A[Specialists in parallel<br/>fundamental · valuation · dividends<br/>news · macro · risk · portfolio]
-    A --> CIO2{{CIO consolidates}}
-    CIO2 --> D[Devil's advocate]
-    CIO2 --> V[Data verifier]
-    D --> DEC{{Decision + journal entry}}
-    V -- "❌ blocks" --> CIO2
-    V --> DEC
-    DEC --> F[(Your files:<br/>theses · watchlist · journal)]
-    DEC --> B([You place the order<br/>with your broker])
-    B -- statement --> CIO
-    J[Company journalist<br/>deep research] -. ideas .-> CIO
+flowchart TD
+    U(["You: analyse company X"]) --> CIO{{"CIO<br/>reads your policy and the approved lessons,<br/>sends the work to the specialists"}}
+
+    subgraph S1 ["Step 1 · Specialists work in parallel"]
+        F["Fundamental analyst<br/>moat, ROIC, margins, FCF,<br/>management, forensic accounting"]
+        DI["Dividend analyst<br/>yield, payout on FCF,<br/>growth, safety score 1–10"]
+        VA["Valuation analyst<br/>multiples, 3-scenario DCF,<br/>reverse DCF, buy price"]
+        N["News analyst<br/>last 3–6 months:<br/>noise or relevant fact"]
+        M["Macro analyst<br/>rates, inflation, FX<br/>and their effect on the sector"]
+        R["Risk manager<br/>concentration, policy limits,<br/>stress tests"]
+    end
+
+    CIO --> F & DI & VA & N & M & R
+    F & DI & VA & N & M & R --> C{{"CIO consolidates<br/>weighted team score<br/>+ calc.py algorithm score 0–100"}}
+
+    subgraph S2 ["Step 2 · Checks before any decision"]
+        DA["Devil's advocate<br/>bear case, worse DCF,<br/>pre-mortem"]
+        V["Data verifier<br/>re-checks every decisive number<br/>in primary sources"]
+    end
+
+    C --> DA & V
+    V -- "❌ wrong numbers: redo" --> C
+    DA & V --> D{{"Step 3 · Decision<br/>BUY · WATCHLIST · PASS"}}
+    D --> FILES[("Your files<br/>report · journal · watchlist · thesis")]
+    D --> YOU(["You decide and place the order<br/>with your broker"])
+    YOU -- "paste the statement" --> CIO
 ```
 
 Agents work in a star: each specialist reports to the CIO, never to each other. Memory between sessions lives in your files (theses, journal, watchlist, approved lessons). `calc.py` does every calculation that must be exact (DCF, reverse DCF, scoring algorithm, risk limits, consistency checks), so numbers don't depend on the model's mental arithmetic.
+
+### The team
+
+| Agent | What it does | Model |
+|---|---|---|
+| CIO (the skill) | Splits the work, combines the opinions, makes the final decision and keeps the files consistent | Opus |
+| `fundamental-analyst` | Is this an excellent business to own for 10 years? Moat, ROIC, margins, FCF, owner earnings, management incentives, forensic accounting | Sonnet |
+| `dividend-analyst` | Is the dividend safe and growing? 10-year history, payout on earnings and FCF, cut risk, safety score 1–10 | Sonnet |
+| `valuation-analyst` | What is it worth? Multiples vs. history and peers, 3-scenario DCF, reverse DCF, base rates, buy price with a 25–30% margin of safety | Sonnet |
+| `news-analyst` | Did anything in the last 3–6 months change the 10-year value? Separates noise from relevant facts | Sonnet |
+| `macro-analyst` | How rates, inflation, the cycle and exchange rates help or hurt the sector over the long term | Sonnet |
+| `risk-manager` | Weights by company, sector, country and currency vs. your policy limits, withholding tax, stress tests (2008, currency +20%, rates +2 points) | Sonnet |
+| `portfolio-manager` | Compares each position with its thesis: ADD / HOLD / WATCH / REVIEW THESIS / TRIM / SELL | Opus |
+| `devils-advocate` | Attacks the recommendation: best bear case, weak assumptions, the committee's biases, pre-mortem | Opus |
+| `data-verifier` | Confirms every decisive number in primary sources, redoes the calculations, audits citations; a ❌ verdict blocks the decision | Opus |
+| `company-journalist` | Deep research (insiders, 13F, supply chains, patents, regulators, job postings): hidden gems, catalysts, alerts, paradigm shifts. Forwards ideas, never recommends | Sonnet |
+
+### What you can ask
+
+| You say | What happens |
+|---|---|
+| *"analyse company X"* | The full path in the diagram. Ends in BUY, WATCHLIST or PASS, with a buy price and the DCF command that produced it |
+| *"review my portfolio"* | Risk, valuation, macro and news on every position; the portfolio manager gives one decision per position; the checks attack anything that is not HOLD |
+| *"I have 1000 EUR to invest"* | Splits the money by your policy, compares candidates below their buy price, checks the risk limits; whatever no stock deserves goes to your core ETF |
+| *"find ideas"* | Quality dividend candidates split into SAFE / MODERATE / AGGRESSIVE; the ones that pass go to the watchlist |
+| *"journalist, find ideas"* | The journalist's deep research; you choose which ideas go on to a full analysis |
+| *"I bought…"* / a broker statement | Records the movements in your files and checks they agree with each other |
+| *"check alerts"* | Watchlist and positions below or near their buy price, and earnings dates in the next 14 days |
+| *"review X's results"* | Results vs. the expectations written beforehand; the buy price changes only if the business changed |
+| *"do the review"* · *"tax report 2026"* · *"annual letter"* · *"show the dashboard"* | Periodic workflows: past decisions vs. outcomes and vs. the benchmark, tax tables, a Buffett-style letter, a dashboard |
 
 ## Requirements
 
