@@ -14,34 +14,7 @@
 
 The CIO is the skill itself: it reads your request, sends the work to the specialists, combines their answers and decides. This is the path of the most complete request, *"analyse company X"*:
 
-```mermaid
-flowchart TD
-    U(["You: analyse company X"]) --> CIO{{"CIO<br/>reads your policy and the approved lessons,<br/>sends the work to the specialists"}}
-
-    subgraph S1 ["Step 1 · Specialists work in parallel"]
-        F["Fundamental analyst<br/>moat, ROIC, margins, FCF,<br/>management, forensic accounting"]
-        DI["Dividend analyst<br/>yield, payout on FCF,<br/>growth, safety score 1–10"]
-        VA["Valuation analyst<br/>multiples, 3-scenario DCF,<br/>reverse DCF, buy price"]
-        N["News analyst<br/>last 3–6 months:<br/>noise or relevant fact"]
-        M["Macro analyst<br/>rates, inflation, FX<br/>and their effect on the sector"]
-        R["Risk manager<br/>concentration, policy limits,<br/>stress tests"]
-    end
-
-    CIO --> F & DI & VA & N & M & R
-    F & DI & VA & N & M & R --> C{{"CIO consolidates<br/>weighted team score<br/>+ calc.py algorithm score 0–100"}}
-
-    subgraph S2 ["Step 2 · Checks before any decision"]
-        DA["Devil's advocate<br/>bear case, worse DCF,<br/>pre-mortem"]
-        V["Data verifier<br/>re-checks every decisive number<br/>in primary sources"]
-    end
-
-    C --> DA & V
-    V -- "❌ wrong numbers: redo" --> C
-    DA & V --> D{{"Step 3 · Decision<br/>BUY · WATCHLIST · PASS"}}
-    D --> FILES[("Your files<br/>report · journal · watchlist · thesis")]
-    D --> YOU(["You decide and place the order<br/>with your broker"])
-    YOU -- "paste the statement" --> CIO
-```
+![How the committee works: you ask the CIO, six specialists work in parallel, the devil's advocate and the data verifier check the result, and the CIO decides BUY, WATCHLIST or PASS](assets/how-it-works.svg)
 
 Agents work in a star: each specialist reports to the CIO, never to each other. Memory between sessions lives in your files (theses, journal, watchlist, approved lessons). `calc.py` does every calculation that must be exact (DCF, reverse DCF, scoring algorithm, risk limits, consistency checks), so numbers don't depend on the model's mental arithmetic.
 
