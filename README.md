@@ -60,12 +60,21 @@ Agents work in a star: each specialist reports to the CIO, never to each other. 
 git clone https://github.com/tycoon2323/investment-committee
 cd investment-committee
 cp -r skills/investment-committee ~/.claude/skills/
-cp agents/*.md ~/.claude/agents/
+mkdir -p ~/.claude/agents
+cp skills/investment-committee/agents/*.md ~/.claude/agents/
 mkdir -p ~/investment-committee
 cp -rn skills/investment-committee/example-data/. ~/investment-committee/   # your private data folder; never overwrites existing files
 ```
 
 On Windows, run these commands in Git Bash (it comes with Git for Windows, which Claude Code uses) or WSL.
+
+**Or with the [skills](https://skills.sh) CLI:**
+
+```bash
+npx skills add tycoon2323/investment-committee -g -a claude-code
+```
+
+This installs the skill only. The CIO still finds the 10 agents inside the skill folder, but to run them as real subagents copy them once: `cp ~/.claude/skills/investment-committee/agents/*.md ~/.claude/agents/`. The data folder is created on first run.
 
 Then edit `~/investment-committee/policy.md` (your investment policy: base currency, country, limits) and ask Claude Code, for example: *"analyse company Nestlé"*, *"review my portfolio"*, *"I have 1000 EUR to invest"*, *"journalist, find ideas"*.
 
@@ -105,7 +114,7 @@ CIO, final: WATCHLIST, buy price lowered to 44 USD (dcf command saved)
 | `skills/investment-committee/calc.py` | Calculator (DCF, reverse DCF, scoring algorithm, risk, performance). Standard library only; `python calc.py test` runs the self-tests |
 | `skills/investment-committee/references/` | Algorithm detail, data rules (transactions, splits, quotes), periodic workflows (review, tax, annual letter, dashboard), templates |
 | `skills/investment-committee/example-data/` | Empty data templates (portfolio, transactions, watchlist, journal…); the CIO copies missing ones on first run |
-| `agents/` | The 10 specialist agents: fundamental, dividends, valuation, news, macro, risk, portfolio manager, devil's advocate, data verifier and company journalist |
+| `skills/investment-committee/agents/` | The 10 specialist agents: fundamental, dividends, valuation, news, macro, risk, portfolio manager, devil's advocate, data verifier and company journalist |
 
 ## Ideas for contributions
 

@@ -52,7 +52,7 @@ Each piece of information has **one** file that rules. The others only hold copi
 
 **Country and base currency:** they are in `policy.md` (the `Base currency:` and `Country of residence:` lines). If missing, ask the user before starting and write them there. All committee values are in the base currency and all tax rules are those of the country of residence. References to Switzerland, the USA or other countries in these files are **examples**: for the user's country, look up the equivalent rule in the official source (tax authority, regulator, central bank) and cite it; if there is no equivalent, say so.
 
-## The team (subagents in `~/.claude/agents/`)
+## The team (subagents; their definitions ship in `agents/` in this folder)
 | Agent | Role |
 |---|---|
 | `fundamental-analyst` | Business quality, ROIC/ROE, margins, FCF, owner earnings, moat, management, forensic accounting, incentives and insiders, scuttlebutt, 13F ideas |
@@ -68,7 +68,7 @@ Each piece of information has **one** file that rules. The others only hold copi
 
 **Verification rule:** no BUY, ADD, TRIM or SELL recommendation leaves the committee without going through the `data-verifier`. Launch it in parallel with the `devils-advocate`, with the provisional recommendation and the decisive numbers for each company. If a ❌ number changes the conclusion, redo that part. If the verdict is **❌ rejected**, the decision does not go out: fix the numbers, redo the affected part and go through the verifier again.
 
-Launch the agents with the Agent tool by name (`subagent_type`). If one is not available (e.g. it was just created), use `general-purpose` with: *"Read `~/.claude/agents/<name>.md` and follow those instructions. Task: …"*. Independent agents are launched **all in the same message** (in parallel). Give each one the context it needs (ticker, portfolio, existing thesis, base currency).
+Launch the agents with the Agent tool by name (`subagent_type`). If one is not installed in `~/.claude/agents/` (e.g. the skill was installed with `npx skills add`, which only copies this folder), use `general-purpose` with: *"Read `agents/<name>.md` in the investment-committee skill folder and follow those instructions. Task: …"*, and tell the user once that copying `agents/*.md` from this folder to `~/.claude/agents/` makes them run as real subagents. Independent agents are launched **all in the same message** (in parallel). Give each one the context it needs (ticker, portfolio, existing thesis, base currency).
 
 ## Committee algorithm
 A quantitative score from 0 to 100 with four pillars (quality, value, health, dividend), to discipline the team's judgement, not to replace it. Whenever the committee scores a company, run `calc.py score … --price … --currency … --index-name … --index … --record` with the data confirmed by the `data-verifier` (only one record per company per year: `calc.py` refuses the second, in which case run it without `--record`; in "find ideas" screenings always run it without `--record`), and show it next to the team's score; **if they differ by more than 2 points (algorithm/10 vs. team), explain why**. The index, the 12-month close and the weight learning are in `references/algorithm.md`: read it before running the algorithm for the first time in the conversation.
