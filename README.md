@@ -47,6 +47,8 @@ mkdir -p ~/investment-committee
 cp -rn skills/investment-committee/example-data/. ~/investment-committee/   # your private data folder; never overwrites existing files
 ```
 
+On Windows, run these commands in Git Bash (it comes with Git for Windows, which Claude Code uses) or WSL.
+
 Then edit `~/investment-committee/policy.md` (your investment policy: base currency, country, limits) and ask Claude Code, for example: *"analyse company Nestlé"*, *"review my portfolio"*, *"I have 1000 EUR to invest"*, *"journalist, find ideas"*.
 
 > Works for any country: set your **base currency** and **country of residence** in `policy.md`, and the committee applies your country's tax rules and benchmark (Swiss and US rules appear in the files only as examples). The committee answers in your language.
