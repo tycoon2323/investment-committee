@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+# personal data never goes into the repository
+scores.csv
+weights.json
+reports/*.md
+theses/*.md
+# just in case someone runs the committee inside the repository
+/portfolio.csv
+/transactions.csv
+/policy.md
+/journal.md
+/watchlist.md
+/journalist.md
+*.log
+.env
